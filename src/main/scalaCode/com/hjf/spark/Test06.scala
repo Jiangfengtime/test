@@ -5,24 +5,28 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * @author Jiang锋时刻
- * @create 2020-04-07 0:13
+ * @create 2020-04-07 11:13
  */
 object Test06 {
   def main(args: Array[String]): Unit = {
-    val conf: SparkConf = new SparkConf().setAppName("Test06").setMaster("local")
+    val conf: SparkConf = new SparkConf().setMaster("local").setAppName("Test06")
     val sc: SparkContext = new SparkContext(conf)
-    val studentInfo: RDD[(String, Int, Int)] = sc.parallelize(Array(
-      ("张三", 20, 80), ("李四", 23, 90), ("王五", 21, 95), ("赵六", 22, 90)
-    ))
-    // 按分数从高到低排序
-     val result: RDD[(String, Int, Int)] = studentInfo.sortBy(_._3, false)
-//    val result: RDD[(String, Int, Int)] = studentInfo.sortBy(_._3, false).sortBy(_._2)
-    result.foreach(println)
-  }
+    val lines: RDD[String] = sc.textFile("./data/studentData")
+    lines.map(s => {
+      (MySort(s.split(" ")(1).toInt, s.split(" ")(2).toInt), s)
+    }).sortByKey(false).map(_._2).foreach(println)
 
+  }
 }
 
-
-object MySort{
-  implicit val ordering = new Ordering[]
+case class MySort(val age:Int, val score:Int) extends Ordered[MySort]{
+  override def compare(that: MySort): Int = {
+    // 先按分数从高到低进行排序
+    // 如果分数相同时按年龄从小到大进行排序
+    if (this.score == that.score){
+      this.age - that.age
+    } else {
+      that.score - this.score
+    }
+  }
 }
