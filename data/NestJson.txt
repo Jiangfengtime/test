@@ -1,0 +1,6 @@
+{"name":"张三", "score":95, "info":{"age":20, "gender": "man"}}
+{"name":"李四", "score":80, "info":{"age":20, "gender": "woman"}}
+{"name":"王五", "score":87, "info":{"age":21, "gender": "woman"}}
+{"name":"赵六", "score":98, "info":{"age":20, "gender": "man"}}
+{"name":"田七", "score":85, "info":{"age":18, "gender": "woman"}}
+{"name":"周八", "score":87, "info":{"age":20, "gender": "man"}}

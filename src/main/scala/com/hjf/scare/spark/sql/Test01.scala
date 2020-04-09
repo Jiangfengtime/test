@@ -1,5 +1,6 @@
 package com.hjf.scare.spark.sql
 
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SQLContext, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -23,14 +24,24 @@ object Test01 {
 //    val result: DataFrame = df.select(df.col("name").equalTo("张三"), df.col("age"))
 //    result.show()
 
-    df.createOrReplaceTempView("t1")
-    val result: DataFrame = spark.sql("select name, age from t1 where age > 18")
-    result.show()
+//    df.createOrReplaceTempView("t1")
+//    val result: DataFrame = spark.sql("select name, age from t1 where age > 18")
+//    result.show()
+//
+//    df.createOrReplaceGlobalTempView("t2")
+//    val result1: DataFrame = spark.sql("select name, age from t1 where age > 18")
+//    result1.show()
 
-    df.createOrReplaceGlobalTempView("t2")
-    val result1: DataFrame = spark.sql("select name, age from t1 where age > 18")
-    result1.show()
+    /**
+     * 将DataFrame转换成RDD
+     *
+     */
 
+    val rdd: RDD[Row] = df.rdd
+//    rdd.foreach(println)
+    rdd.foreach(row => {
+      println(row.getAs("name"))
+    })
 
 
 
